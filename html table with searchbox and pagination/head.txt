@@ -1,0 +1,114 @@
+<?php
+session_start(); 
+$_SESSION['current_page'] = "User Module Page";
+require_once("../connection/dbconnection.php");
+$db_handle = new DBController();
+
+?>
+
+<div id="o-wrapper" class="o-wrapper">
+	<?php
+		$_SESSION["check"] = 0;
+
+		if(isset($_POST['bulk_delete_submit'])){
+			if(empty($_POST['checked_id'])){
+				$_SESSION['info_msg'] = "Nothing selected for delete";
+			}
+			else{
+				$idArr = $_POST['checked_id'];
+				foreach($idArr as $id){
+					$db_handle->delete("DELETE FROM user WHERE id ='$id'");
+					$_SESSION['info_msg'] = "Successfully Delete";
+				}
+			}
+		}
+		
+		if(isset($_POST['viewalldata'])){
+			$_SESSION["check"] = 0; 
+			$_SESSION["page"] = 0;
+			$_GET['page'] = 0;
+		}
+		  
+		if(isset($_POST['sdata'])){
+			$_SESSION["check"] = 1;
+			$_SESSION["searchrow"] = $_POST['sbox'];
+			$_SESSION["page"] = 0;
+			$_GET['page'] = 0;
+		}
+
+	?>
+
+
+		<table width="100%" border="1">
+			<tr>
+				<td style="text-align:left">
+					<form  method = "post" action = "<?php $_PHP_SELF ?>">
+						<input name = "viewalldata" type = "submit" id="buttonx" class="mui-btn"  value = "Refresh"  >
+				</td>
+				<td width="60%" style="text-align:left">
+						<input name = "sbox" type = "text"  size="10"  placeholder="Type any Block Name/ID.." id = "namanyay-search-box" onKeyPress="return submitenter(this,event)">
+				</td>
+				<td style="text-align:left">
+						<input name = "sdata" class="mui-btn" type = "submit" id="buttonx" value = "Search" >
+					</form>
+				</td>
+				<td width="40%" style="text-align:right">
+					<table width="100%" border="0">
+						<tr>
+							
+							<td width="1%"><form  name="bulk_action_form" action="<?php $_PHP_SELF ?>" method="post"/>
+								<!--<input id="buttonx"  type="submit" class="ph-button ph-btn-red" onClick="return delete_confirm();" name="bulk_delete_submit" 		
+									value="Delete"/>-->
+								<input  id="c-button--slide-top2" class="c-button2"  type = "hidden"value = "view">
+								<input  id="c-button--slide-top3" class="c-button3"  type = "hidden"value = "update">
+							</td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+		</table>
+
+
+	<?php
+		if($_SESSION["check"] == 0){
+			include_once("table_3_1.php");
+	?>
+		<div class="tablecontent">
+			<table id="table_content" class="mui-table mui-table--bordered"  width="100%" border="1" style="border-width: 15px;" >
+				<?php
+					include_once("table_3_2.php");
+		 
+				?>   
+			</table>
+		</div>
+		 
+	<?php
+		}
+		else if($_SESSION["check"] == 1){		
+			include_once("table_4_1.php");
+	?>
+		
+		<div class="tablecontent">
+			<table id="table_content" class="mui-table mui-table--bordered" width="100%" border="1">
+				<?php
+					include_once("table_4_2.php");
+		 
+				?>   
+			</table>
+			
+		</div>
+	<?php			
+		}		
+	?>
+	  
+	</form>
+	<div>
+         <table width="100%" border="0">
+  				<tr>
+    					<td style="text-align:center"><?=$pagination?></td>
+ 			 	</tr>
+		</table>
+        </div>
+		
+	</div>
+

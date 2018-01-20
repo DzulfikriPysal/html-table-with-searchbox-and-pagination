@@ -1,0 +1,62 @@
+$no = ($page1 * 10) - 9;
+	echo "<thead><tr>
+						<td style=' height:40px; text-align:center;'>No</td>
+						<td style=' height:40px; text-align:center;'>Full Name</td>
+    					<td style=' text-align:center;'>mode</td>
+    					<td style=' text-align:center;'>Last Seen</td>
+						<td style=' text-align:center;'>Detail</td>
+						<td style=' text-align:center;'>Detail</td>
+						<td style=' text-align:center;'><input type='checkbox' id='checkall' name='select_all' value=''/></td>
+  					</tr> </thead>";
+
+
+	 		if($total_pages > 0){
+				while($row = mysqli_fetch_array($result)){	
+				if($row['id'] == $_SESSION["id"]){
+					echo "<tr>
+						<td style=' text-align:center;'>".$no."</td>
+    					<td style=' text-align:center;'>".$row['id']."</td>
+    					<td style=' text-align:center;'>".$row['mode']."</td>
+    					<td style=' text-align:center;'>".$row['last_seen']."</td>";
+						 echo '</td>
+            			<td align="center">
+			
+            			<input id="viewdetail" type="button" name="'. $row['id']. '" onClick=    
+              			 "view(this.name)" value="View Detail"/>
+            
+            
+            			</td>
+            			<td align="center"><input id="updatebutton" type="button" name="'.$row['id'].'" onClick=    
+               			"reply_click(this.name)"  value="Update"/></td>
+            			<td align="center">
+            			<input type="checkbox" name="checked_id[]" class="checkbox" value="'. $row['id'].'" disabled="disabled"/></td>    
+        		  </tr> ';
+						$no = $no + 1;
+				}
+				else{
+					echo "<tr>
+						<td style=' text-align:center;'>".$no."</td>
+    					<td style=' text-align:center;'>".$row['id']."</td>
+    					<td style=' text-align:center;'>".$row['mode']."</td>
+    					<td style=' text-align:center;'>".$row['last_seen']."</td>";
+						 echo '</td>
+            			<td align="center">
+			
+            			<input id="viewdetail" type="button" name="'. $row['id']. '" onClick=    
+              			 "view(this.name)" value="View Detail"/>
+            
+            
+            			</td>
+            			<td align="center"><input id="updatebutton" type="button" name="'.$row['id'].'" onClick=    
+               			"reply_click(this.name)"  value="Update"/></td>
+            			<td align="center">
+            			<input type="checkbox" name="checked_id[]" class="checkbox" value="'. $row['id'].'"/></td>    
+        		  </tr> ';
+						$no = $no + 1;
+				}
+					
+				}
+				
+			}else{
+				echo ' <tr><td colspan="7">No records found.</td></tr> ';	
+		}
